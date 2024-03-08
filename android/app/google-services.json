@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "17284572658",
+    "firebase_url": "https://kt-music-d6058-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "kt-music-d6058",
+    "storage_bucket": "kt-music-d6058.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17284572658:android:d1d8394ca08f8dc95cb76b",
+        "android_client_info": {
+          "package_name": "com.kt.anhkiet.kt_course"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAJ_6XaIzE3xOX0M0J0xUfDjbbSU39sS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
