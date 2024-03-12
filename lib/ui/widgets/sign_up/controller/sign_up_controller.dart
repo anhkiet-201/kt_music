@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:kt_course/app/navigation/navigator_define.dart';
+import 'package:kt_course/common/constants.dart';
+import 'package:kt_course/global/auth/auth_controller_provider.dart';
 import 'package:mobx/mobx.dart';
 import 'package:kt_course/core/base/controller/base_controller.dart';
 part 'sign_up_controller.g.dart';
 
 class SignUpController = _SignUpControllerBase with _$SignUpController;
 
-abstract class _SignUpControllerBase extends BaseController with Store {
+abstract class _SignUpControllerBase extends BaseController
+    with Store, AuthControllerProvider {
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
   late final TextEditingController ageController;
@@ -33,7 +36,19 @@ abstract class _SignUpControllerBase extends BaseController with Store {
   @readonly
   int _step = 0;
 
-  final ObservableList<bool> completedStep = ObservableList.of(List.generate(5, (index) => false));
+  @readonly
+  bool _isLoading = false;
+
+  final ObservableList<bool> completedStep =
+      ObservableList.of(List.generate(5, (index) => false));
+
+  final ObservableList<String> error =
+      ObservableList.of(List.generate(5, (index) => ''));
+
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode ageFocusNode = FocusNode();
+  final FocusNode nameFocusNode = FocusNode();
 
   @action
   void _listen() {
@@ -49,18 +64,56 @@ abstract class _SignUpControllerBase extends BaseController with Store {
     nameController.addListener(() {
       _validation();
     });
+    pageController.addListener(() {
+      switch (pageController.page?.toInt()) {
+        case 0:
+          emailFocusNode.requestFocus();
+          break;
+        case 1:
+          passwordFocusNode.requestFocus();
+          break;
+        case 2:
+          ageFocusNode.requestFocus();
+          break;
+        case 4:
+          nameFocusNode.requestFocus();
+          break;
+        default:
+          FocusManager.instance.primaryFocus?.unfocus();
+          break;
+      }
+    });
   }
 
   @action
   _validation() {
-    completedStep[_step] = switch (_step) {
-      0 => emailController.text.isNotEmpty,
-      1 => passwordController.text.isNotEmpty,
-      2 => ageController.text.isNotEmpty,
-      3 => _selectedGender != null,
-      4 => nameController.text.isNotEmpty,
-      _ => false
+    error[_step] = switch (_step) {
+      0 => Constants.emailRegex.hasMatch(emailController.text.trim()) ||
+              emailController.text.isEmpty
+          ? ''
+          : 'Email không hợp lệ.',
+      1 =>
+        passwordController.text.length >= 8 || passwordController.text.isEmpty
+            ? ''
+            : 'Mật khẩu tối thiểu 8 ký tự.',
+      2 => (int.tryParse(ageController.text) ?? 0) >= 15 &&
+                  (int.tryParse(ageController.text) ?? 0) <= 100 ||
+              ageController.text.isEmpty
+          ? ''
+          : 'Bạn không đủ tuổi để sử dụng.',
+      3 => '',
+      4 => '',
+      _ => ''
     };
+    completedStep[_step] = switch (_step) {
+          0 => emailController.text.isNotEmpty,
+          1 => passwordController.text.isNotEmpty,
+          2 => ageController.text.isNotEmpty,
+          3 => _selectedGender != null,
+          4 => nameController.text.isNotEmpty,
+          _ => false
+        } &&
+        error[_step].isEmpty;
   }
 
   @action
@@ -74,7 +127,7 @@ abstract class _SignUpControllerBase extends BaseController with Store {
 
   @action
   void previousPage() {
-    if(_step == 0) {
+    if (_step == 0) {
       nav.pop();
       return;
     }
@@ -92,6 +145,20 @@ abstract class _SignUpControllerBase extends BaseController with Store {
   void selectGender(SGender gender) {
     _selectedGender = gender;
     _validation();
+  }
+
+  @action
+  Future<void> signUp() async {
+    if (_isLoading) return;
+    _isLoading = true;
+    await authController.signUp(
+      email: emailController.text,
+      password: passwordController.text,
+      name: nameController.text,
+      age: ageController.text,
+      gender: _selectedGender?.title ?? '',
+    );
+    _isLoading = false;
   }
 
   @override

@@ -46,6 +46,68 @@ mixin _$SignInController on _SignInControllerBase, Store {
     });
   }
 
+  late final _$_isLoadingAtom =
+      Atom(name: '_SignInControllerBase._isLoading', context: context);
+
+  bool get isLoading {
+    _$_isLoadingAtom.reportRead();
+    return super._isLoading;
+  }
+
+  @override
+  bool get _isLoading => isLoading;
+
+  @override
+  set _isLoading(bool value) {
+    _$_isLoadingAtom.reportWrite(value, super._isLoading, () {
+      super._isLoading = value;
+    });
+  }
+
+  late final _$_emailValidationAtom =
+      Atom(name: '_SignInControllerBase._emailValidation', context: context);
+
+  String get emailValidation {
+    _$_emailValidationAtom.reportRead();
+    return super._emailValidation;
+  }
+
+  @override
+  String get _emailValidation => emailValidation;
+
+  @override
+  set _emailValidation(String value) {
+    _$_emailValidationAtom.reportWrite(value, super._emailValidation, () {
+      super._emailValidation = value;
+    });
+  }
+
+  late final _$_passwordValidationAtom =
+      Atom(name: '_SignInControllerBase._passwordValidation', context: context);
+
+  String get passwordValidation {
+    _$_passwordValidationAtom.reportRead();
+    return super._passwordValidation;
+  }
+
+  @override
+  String get _passwordValidation => passwordValidation;
+
+  @override
+  set _passwordValidation(String value) {
+    _$_passwordValidationAtom.reportWrite(value, super._passwordValidation, () {
+      super._passwordValidation = value;
+    });
+  }
+
+  late final _$signInAsyncAction =
+      AsyncAction('_SignInControllerBase.signIn', context: context);
+
+  @override
+  Future<void> signIn() {
+    return _$signInAsyncAction.run(() => super.signIn());
+  }
+
   late final _$_SignInControllerBaseActionController =
       ActionController(name: '_SignInControllerBase', context: context);
 
@@ -55,6 +117,28 @@ mixin _$SignInController on _SignInControllerBase, Store {
         name: '_SignInControllerBase.showOrHidePassword');
     try {
       return super.showOrHidePassword();
+    } finally {
+      _$_SignInControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic _listen() {
+    final _$actionInfo = _$_SignInControllerBaseActionController.startAction(
+        name: '_SignInControllerBase._listen');
+    try {
+      return super._listen();
+    } finally {
+      _$_SignInControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic _checkShowButton() {
+    final _$actionInfo = _$_SignInControllerBaseActionController.startAction(
+        name: '_SignInControllerBase._checkShowButton');
+    try {
+      return super._checkShowButton();
     } finally {
       _$_SignInControllerBaseActionController.endAction(_$actionInfo);
     }

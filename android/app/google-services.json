@@ -1,27 +1,43 @@
 {
   "project_info": {
-    "project_number": "17284572658",
-    "firebase_url": "https://kt-music-d6058-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "kt-music-d6058",
-    "storage_bucket": "kt-music-d6058.appspot.com"
+    "project_number": "972673057633",
+    "project_id": "datn-578a6",
+    "storage_bucket": "datn-578a6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:17284572658:android:d1d8394ca08f8dc95cb76b",
+        "mobilesdk_app_id": "1:972673057633:android:1a2c516d65f29175aafb20",
         "android_client_info": {
           "package_name": "com.kt.anhkiet.kt_course"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "972673057633-piq8dufdcr9dllerj78sslbqsuo6nhd1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBAJ_6XaIzE3xOX0M0J0xUfDjbbSU39sS0"
+          "current_key": "AIzaSyA7tk2RrvhlUEyowCmBVb6npJxIyb_0XFU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972673057633-piq8dufdcr9dllerj78sslbqsuo6nhd1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "972673057633-eha7gnidiinlvl4phs24fij3hbdb99h9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kt.anhkiet.ktCourse"
+              }
+            }
+          ]
         }
       }
     }

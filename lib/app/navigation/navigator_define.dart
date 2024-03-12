@@ -1,4 +1,3 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:kt_course/core/di/Injector.dart';
 import 'package:kt_course/core/navigation/navigator.dart';
 import 'package:kt_course/core/reactive/setting_value/controller/setting_value.dart';
@@ -13,8 +12,10 @@ import 'package:kt_course/ui/pages/onboarding/onboarding_page.dart';
 import 'package:kt_course/ui/pages/settings/settings_page.dart';
 import 'package:kt_course/ui/widgets/custom_video_player/controller/custom_video_player_controller.dart';
 import 'package:kt_course/ui/widgets/custom_video_player/custom_video_player_full_screen.dart';
-import 'package:kt_course/ui/widgets/login/controller/login_sheet_controller.dart';
-import 'package:kt_course/ui/widgets/login/login_sheet.dart';
+import 'package:kt_course/ui/widgets/input_email_reset/controller/input_email_reset_controller.dart';
+import 'package:kt_course/ui/widgets/input_email_reset/input_email_reset.dart';
+import 'package:kt_course/ui/widgets/reset_password/controller/reset_password_controller.dart';
+import 'package:kt_course/ui/widgets/reset_password/reset_password.dart';
 import 'package:kt_course/ui/widgets/settings/bottom_sheet/controller/setting_options_sheet_controller.dart';
 import 'package:kt_course/ui/widgets/settings/bottom_sheet/setting_options_sheet.dart';
 import 'package:kt_course/ui/widgets/settings/bottom_sheet/settings_options_sheet_item.dart';
@@ -66,17 +67,42 @@ class NavigationDefine {
         create: (_) => SignUpController(),
         child: const SignUp(),
       ),
-      type: PushType.replaceAll,
     );
   }
 
   toSignIn() {
-    _navigator.push(
+    _navigator.showBottomSheet(
       Provider(
         create: (_) => SignInController(),
         child: const SignIn(),
       ),
-      type: PushType.replaceAll,
+      title: 'Đăng nhập'
+    );
+  }
+
+  toResetPassword({
+    required String oobCode,
+    required String apiKey,
+    String? lang,
+  }) {
+    _navigator.showBottomSheet(
+      Provider(
+        create: (_) => ResetPasswordController(
+          oobCode: oobCode,
+          apiKey: apiKey,
+        ),
+        child: const ResetPassword(),
+      ),
+    );
+  }
+
+  toSendEmailReset() {
+    _navigator.showBottomSheet(
+      Provider(
+        create: (_) => InputEmailResetController(),
+        child: const InputEmailReset(),
+      ),
+      title: 'Quên mật khẩu'
     );
   }
 
@@ -114,18 +140,6 @@ class NavigationDefine {
 
   enterVideoPlayerFullScreenMode(CustomVideoPlayerController controller) {
     _navigator.push(CustomVideoPlayerFullScreen(controller));
-  }
-
-  Future<(String, String)?> showLoginSheet() async {
-    return await _navigator.showBottomSheet<(String, String)>(
-      Provider(
-        create: (_) => LoginSheetController(),
-        child: const LoginSheet(),
-        dispose: (_, controller) {
-          controller.onDispose();
-        },
-      ),
-    );
   }
 
   toMusicPlayer() {

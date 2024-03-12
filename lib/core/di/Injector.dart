@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:kt_course/common/app_config.dart';
 import 'package:kt_course/common/firebase_options.dart';
 import 'package:kt_course/core/data/local/hive_storage/local_storage.dart';
 import 'package:kt_course/core/data/local/impl/local_starage_impl.dart';
@@ -13,10 +12,10 @@ import 'package:kt_course/app/navigation/navigator_impl.dart';
 import 'package:kt_course/core/reactive/setting_value/repository/setting_value_repository.dart';
 import 'package:kt_course/core/reactive/setting_value/repository/setting_value_repository_impl.dart';
 import 'package:kt_course/core/services/kt_music_services.dart';
-import 'package:kt_course/core/services/model/user/user.dart';
 import 'package:kt_course/global/app/controller/app_controller.dart';
 import 'package:kt_course/global/app/repository/app_repository.dart';
 import 'package:kt_course/global/app/repository/app_repository_impl.dart';
+import 'package:kt_course/global/app_links/controller/app_links_controller.dart';
 import 'package:kt_course/global/auth/controller/auth_controller.dart';
 import 'package:kt_course/global/auth/repository/auth_repository.dart';
 import 'package:kt_course/global/auth/repository/auth_repository_impl.dart';
@@ -26,9 +25,6 @@ import 'package:kt_course/global/settings/repository/settings_repository.dart';
 import 'package:kt_course/global/settings/repository/settings_repository_impl.dart';
 import 'package:kt_course/global/tabbar/controller/tab_bar_controller.dart';
 import 'package:kt_course/impl/kt_music_services_impl.dart';
-import 'package:kt_course_apis/core/config.dart';
-import 'package:kt_course_apis/core/impl/service/api_services_impl.dart';
-import 'package:kt_course_apis/core/service/api_services.dart';
 
 final injector = Injector();
 
@@ -77,6 +73,7 @@ class Injector {
     _getIt.registerLazySingleton<TabBarController>(TabBarController.new);
     _getIt.registerLazySingleton<SettingsController>(SettingsController.new);
     _getIt.registerSingleton<PlayerController>(PlayerController());
+    _getIt.registerSingleton<AppLinksController>(AppLinksController());
   }
 
   _injectLocalStorage() async {

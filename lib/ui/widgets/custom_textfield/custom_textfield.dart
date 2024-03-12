@@ -14,7 +14,10 @@ class CustomTextField extends StatelessWidget {
       this.prefixIcon,
       this.keyboardType,
       this.inputFormatters,
-      this.onChanged});
+      this.onChanged,
+      this.autofocus = false,
+      this.focusNode,
+      this.textInputAction});
 
   final String? hintText;
   final int? maxLines;
@@ -26,6 +29,9 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final TextInputType?keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final bool autofocus;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +42,11 @@ class CustomTextField extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextFormField(
+          focusNode: focusNode,
+          autofocus: autofocus,
           controller: controller,
           onChanged: onChanged,
-          textInputAction: TextInputAction.next,
+          textInputAction: textInputAction,
           maxLines: maxLines,
           cursorColor: context.color.onBackground,
           decoration: InputDecoration(

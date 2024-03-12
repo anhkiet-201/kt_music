@@ -13,34 +13,22 @@ abstract class _OnboardingControllerBase extends BaseController with Store, Auth
   @readonly
   bool _isLoading = false;
 
-  @readonly
-  bool _isLoginEamilAndPassword = false;
-
-  @readonly
-  bool _isLoginWithGoogle = false;
-
   @action
-  loginWithGoogle() async {
+  signInWithGoogle() async {
     _isLoading = true;
-    _isLoginWithGoogle = true;
     await authController.signInWithGoogle();
     if(authController.isLogined) {
       nav.toHome();
     }
     _isLoading = false;
-    _isLoginWithGoogle = false;
   }
 
-  @action
-  showLoginSheet() async {
-    // final result = await nav.showLoginSheet();
-    // if (result != null) {
-    //   _isLoading = true;
-    //   _isLoginEamilAndPassword = true;
-    //   // await authController.si(email: result.$1, password: result.$2);
-    //   _isLoading = false;
-    //   _isLoginEamilAndPassword = false;
-    // }
+  void signIn() {
+    nav.toSignIn();
+  }
+
+  void signUp() {
+    nav.toSignUp();
   }
 
   @override

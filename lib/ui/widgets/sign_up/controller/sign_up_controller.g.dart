@@ -63,6 +63,32 @@ mixin _$SignUpController on _SignUpControllerBase, Store {
     });
   }
 
+  late final _$_isLoadingAtom =
+      Atom(name: '_SignUpControllerBase._isLoading', context: context);
+
+  bool get isLoading {
+    _$_isLoadingAtom.reportRead();
+    return super._isLoading;
+  }
+
+  @override
+  bool get _isLoading => isLoading;
+
+  @override
+  set _isLoading(bool value) {
+    _$_isLoadingAtom.reportWrite(value, super._isLoading, () {
+      super._isLoading = value;
+    });
+  }
+
+  late final _$signUpAsyncAction =
+      AsyncAction('_SignUpControllerBase.signUp', context: context);
+
+  @override
+  Future<void> signUp() {
+    return _$signUpAsyncAction.run(() => super.signUp());
+  }
+
   late final _$_SignUpControllerBaseActionController =
       ActionController(name: '_SignUpControllerBase', context: context);
 

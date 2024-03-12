@@ -3,8 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/common/extensions/context_extensions.dart';
+import 'package:kt_course/core/base/exception/api_error.dart';
 import 'package:kt_course/core/navigation/navigator.dart' as nav;
-import 'package:kt_course_apis/core/base/api_error.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -55,45 +55,41 @@ class NavigatorImpl implements nav.Navigator {
       overlay,
       Material(
         color: Colors.transparent,
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
               color: const Color.fromARGB(80, 85, 85, 85),
               borderRadius: BorderRadius.circular(10)),
-          child: Stack(
-            alignment: Alignment.centerLeft,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
-                    height: 50,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.info,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          parseMessage ?? '',
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.info,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      parseMessage ?? '',
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    )
-                  ],
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),
@@ -140,6 +136,7 @@ class NavigatorImpl implements nav.Navigator {
                   }),
                   centerTitle: true,
                   leading: const CloseButton(),
+                  surfaceTintColor: Colors.transparent,
                 ),
                 body: page,
               ),

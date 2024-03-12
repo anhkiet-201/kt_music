@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -9,9 +8,9 @@ import 'package:kt_course/ui/widgets/bouncing_tap_wrapper/bouncing_tap_wrapper.d
 import 'package:kt_course/ui/widgets/button/s_button.dart';
 import 'package:kt_course/ui/widgets/custom_textfield/custom_textfield.dart';
 import 'package:kt_course/ui/widgets/sign_up/controller/sign_up_controller.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class SignUp extends StatelessWidget 
-with ControllerProvider<SignUpController> {
+class SignUp extends StatelessWidget with ControllerProvider<SignUpController> {
   const SignUp({super.key});
 
   @override
@@ -34,20 +33,19 @@ with ControllerProvider<SignUpController> {
     );
   }
 
-  Widget get _content => Builder(
-    builder: (context) {
-      return PageView(
-        controller: controller(context).pageController,
-            children: [
-              _inputEmail,
-              _inputPassword,
-              _inputAge,
-              _selectGender,
-              _inputName,
-            ],
-          );
-    }
-  );
+  Widget get _content => Builder(builder: (context) {
+        return PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: controller(context).pageController,
+          children: [
+            _inputEmail,
+            _inputPassword,
+            _inputAge,
+            _selectGender,
+            _inputName,
+          ],
+        );
+      });
 
   Widget get _inputEmail => Observer(builder: (context) {
         final ctrl = controller(context);
@@ -70,9 +68,13 @@ with ControllerProvider<SignUpController> {
                 height: 20,
               ),
               CustomTextField(
+                autofocus: true,
+                focusNode: ctrl.emailFocusNode,
                 controller: ctrl.emailController,
                 keyboardType: TextInputType.emailAddress,
               ),
+              const SizedBox(height: 5,),
+              _buildLabel(ctrl.error[0], color: context.color.error),
               const SizedBox(
                 height: 20,
               ),
@@ -103,8 +105,9 @@ with ControllerProvider<SignUpController> {
                 height: 20,
               ),
               CustomTextField(
+                focusNode: ctrl.passwordFocusNode,
                 controller: ctrl.passwordController,
-                obscureText: ctrl.shoudShowPassword,
+                obscureText: !ctrl.shoudShowPassword,
                 maxLines: 1,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -115,6 +118,10 @@ with ControllerProvider<SignUpController> {
                   onPressed: ctrl.showOrHidePassword,
                 ),
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              _buildLabel(ctrl.error[1], color: context.color.error),
               const SizedBox(
                 height: 20,
               ),
@@ -145,10 +152,15 @@ with ControllerProvider<SignUpController> {
                 height: 20,
               ),
               CustomTextField(
+                focusNode: ctrl.ageFocusNode,
                 controller: ctrl.ageController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              _buildLabel(ctrl.error[2], color: context.color.error),
               const SizedBox(
                 height: 20,
               ),
@@ -159,7 +171,6 @@ with ControllerProvider<SignUpController> {
       });
 
   Widget get _selectGender => Observer(builder: (context) {
-        final ctrl = controller(context);
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -261,6 +272,7 @@ with ControllerProvider<SignUpController> {
                     height: 20,
                   ),
                   CustomTextField(
+                    focusNode: ctrl.nameFocusNode,
                     controller: ctrl.nameController,
                   ),
                   const SizedBox(
@@ -293,15 +305,29 @@ with ControllerProvider<SignUpController> {
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
-              child: SButton(
-                child: Text(
-                  'Tạo tài khoản',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: context.color.background,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                    color:
+                        ctrl.completedStep[4] ? null : context.color.background,
+                    borderRadius: BorderRadius.circular(25)),
+                child: SButton(
+                  onPressed: ctrl.completedStep[4] ? ctrl.signUp : null,
+                  child: ctrl.isLoading
+                      ? SizedBox.square(
+                          dimension: 25,
+                          child: LoadingAnimationWidget.prograssiveDots(
+                            color: context.color.onBackground,
+                            size: 25,
+                          ),
+                        )
+                      : Text(
+                          'Tạo tài khoản',
+                          style: context.textTheme.labelLarge?.copyWith(
+                            color: context.color.background,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
-                onPressed: () {},
               ),
             ),
           ),

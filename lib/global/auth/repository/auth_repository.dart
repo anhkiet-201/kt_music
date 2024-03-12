@@ -35,5 +35,18 @@ abstract interface class AuthRepository extends BaseRepository {
     required String gender
   });
 
+  Future<void> sync();
+
   bool get isLogined;
+
+  Future<void> resetPassword({required String email});
+
+  Future<String?> getEmailFromOobCode(String code);
+
+  Future<void> updatePassword({
+    required String code,
+    required String newPassword
+  });
+
+  User? get user;
 }

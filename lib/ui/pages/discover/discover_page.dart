@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:kt_course/app/navigation/navigator_define.dart';
 import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/common/extensions/context_extensions.dart';
@@ -10,7 +7,6 @@ import 'package:kt_course/ui/pages/discover/controller/discover_controller.dart'
 import 'package:kt_course/ui/widgets/bouncing_tap_wrapper/bouncing_tap_wrapper.dart';
 import 'package:kt_course/ui/widgets/carousel_card/artist_card.dart';
 import 'package:kt_course/ui/widgets/carousel_card/music_small_card.dart';
-import 'package:kt_course/ui/widgets/course/course_item.dart';
 
 class DiscoverPage extends StatelessWidget
     with ControllerProvider<DiscoverController> {

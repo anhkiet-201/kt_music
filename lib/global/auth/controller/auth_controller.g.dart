@@ -54,6 +54,32 @@ mixin _$AuthController on _AuthControllerBase, Store {
     return _$_handleSignInAsyncAction.run(() => super._handleSignIn());
   }
 
+  late final _$signUpAsyncAction =
+      AsyncAction('_AuthControllerBase.signUp', context: context);
+
+  @override
+  Future<void> signUp(
+      {required String email,
+      required String password,
+      required String name,
+      required String age,
+      required String gender}) {
+    return _$signUpAsyncAction.run(() => super.signUp(
+        email: email,
+        password: password,
+        name: name,
+        age: age,
+        gender: gender));
+  }
+
+  late final _$syncUserAsyncAction =
+      AsyncAction('_AuthControllerBase.syncUser', context: context);
+
+  @override
+  Future<void> syncUser() {
+    return _$syncUserAsyncAction.run(() => super.syncUser());
+  }
+
   late final _$logoutAsyncAction =
       AsyncAction('_AuthControllerBase.logout', context: context);
 

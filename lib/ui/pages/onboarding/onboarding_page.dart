@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/common/extensions/context_extensions.dart';
-import 'package:kt_course/common/extensions/hero_animation_extensions.dart';
 import 'package:kt_course/core/base/controller/controller_provider.dart';
 import 'package:kt_course/ui/pages/onboarding/controller/onboarding_controller.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kt_course/ui/widgets/button/s_button.dart';
 import 'package:neumorphic_ui/neumorphic_ui.dart';
 
@@ -40,7 +36,7 @@ class OnboardingPage extends StatelessWidget
 
   Widget get _content => Builder(builder: (context) {
         return Column(
-          children: [_appLogo, _introText, _optionsButton],
+          children: [_appLogo, _introText, _optionsButton,],
         );
       });
 
@@ -80,6 +76,7 @@ class OnboardingPage extends StatelessWidget
 
   Widget get _signUpButton => Builder(builder: (context) {
         return SButton(
+          onPressed: controller(context).signUp,
           child: Text(
             'Đăng ký miễn phí',
             style: context.textTheme.labelLarge?.copyWith(
@@ -87,13 +84,13 @@ class OnboardingPage extends StatelessWidget
               fontWeight: FontWeight.bold,
             ),
           ),
-          onPressed: () {},
         );
       });
 
   Widget get _signInWithGoogle => Builder(builder: (context) {
         return SButton(
           style: SButtonStyle.outlined,
+          onPressed: controller(context).signInWithGoogle,
           child: Text(
             'Tiếp tục với Google',
             style: context.textTheme.labelLarge?.copyWith(
@@ -101,13 +98,13 @@ class OnboardingPage extends StatelessWidget
               fontWeight: FontWeight.bold,
             ),
           ),
-          onPressed: () {},
         );
       });
 
   Widget get _signIn => Builder(builder: (context) {
         return SButton(
           style: SButtonStyle.text,
+          onPressed: controller(context).signIn,
           child: Text(
             'Đăng nhập',
             style: context.textTheme.labelLarge?.copyWith(
@@ -115,7 +112,6 @@ class OnboardingPage extends StatelessWidget
               fontWeight: FontWeight.bold,
             ),
           ),
-          onPressed: () {},
         );
       });
 }

@@ -27,59 +27,13 @@ mixin _$OnboardingController on _OnboardingControllerBase, Store {
     });
   }
 
-  late final _$_isLoginEamilAndPasswordAtom = Atom(
-      name: '_OnboardingControllerBase._isLoginEamilAndPassword',
-      context: context);
-
-  bool get isLoginEamilAndPassword {
-    _$_isLoginEamilAndPasswordAtom.reportRead();
-    return super._isLoginEamilAndPassword;
-  }
-
-  @override
-  bool get _isLoginEamilAndPassword => isLoginEamilAndPassword;
-
-  @override
-  set _isLoginEamilAndPassword(bool value) {
-    _$_isLoginEamilAndPasswordAtom
-        .reportWrite(value, super._isLoginEamilAndPassword, () {
-      super._isLoginEamilAndPassword = value;
-    });
-  }
-
-  late final _$_isLoginWithGoogleAtom = Atom(
-      name: '_OnboardingControllerBase._isLoginWithGoogle', context: context);
-
-  bool get isLoginWithGoogle {
-    _$_isLoginWithGoogleAtom.reportRead();
-    return super._isLoginWithGoogle;
-  }
-
-  @override
-  bool get _isLoginWithGoogle => isLoginWithGoogle;
-
-  @override
-  set _isLoginWithGoogle(bool value) {
-    _$_isLoginWithGoogleAtom.reportWrite(value, super._isLoginWithGoogle, () {
-      super._isLoginWithGoogle = value;
-    });
-  }
-
-  late final _$loginWithGoogleAsyncAction = AsyncAction(
-      '_OnboardingControllerBase.loginWithGoogle',
+  late final _$signInWithGoogleAsyncAction = AsyncAction(
+      '_OnboardingControllerBase.signInWithGoogle',
       context: context);
 
   @override
-  Future loginWithGoogle() {
-    return _$loginWithGoogleAsyncAction.run(() => super.loginWithGoogle());
-  }
-
-  late final _$showLoginSheetAsyncAction =
-      AsyncAction('_OnboardingControllerBase.showLoginSheet', context: context);
-
-  @override
-  Future showLoginSheet() {
-    return _$showLoginSheetAsyncAction.run(() => super.showLoginSheet());
+  Future signInWithGoogle() {
+    return _$signInWithGoogleAsyncAction.run(() => super.signInWithGoogle());
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/ui/widgets/bouncing_tap_wrapper/bouncing_tap_wrapper.dart';
 
 class SButton extends StatelessWidget {

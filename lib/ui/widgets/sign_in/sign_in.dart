@@ -7,29 +7,18 @@ import 'package:kt_course/core/base/controller/controller_provider.dart';
 import 'package:kt_course/ui/widgets/button/s_button.dart';
 import 'package:kt_course/ui/widgets/custom_textfield/custom_textfield.dart';
 import 'package:kt_course/ui/widgets/sign_in/controller/sign_in_controller.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class SignIn extends StatelessWidget
-with ControllerProvider<SignInController> {
+class SignIn extends StatelessWidget with ControllerProvider<SignInController> {
   const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = controller(context);
     return Scaffold(
-      appBar: AppBar(
-        surfaceTintColor: Colors.transparent,
-        centerTitle: true,
-        title: Text(
-          'Đăng nhập',
-          style: context.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: GestureDetector(
-          onTap: () => nav.pop(),
-          child: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),
-      ),
-      body: _content,
+      body: Observer(builder: (context) {
+        return ctrl.isLoading ? _loading : _content;
+      }),
     );
   }
 
@@ -37,7 +26,7 @@ with ControllerProvider<SignInController> {
         return ListView(
           padding: const EdgeInsets.all(16.0),
           children: [
-                          const SizedBox(
+            const SizedBox(
               height: 50,
             ),
             _inputEmail,
@@ -45,13 +34,22 @@ with ControllerProvider<SignInController> {
               height: 40,
             ),
             _inputPassword,
-            const SizedBox(height: 40,),
+            const SizedBox(
+              height: 40,
+            ),
             _signButton,
             const SizedBox(
               height: 10,
             ),
             _forgetButton
           ],
+        );
+      });
+
+  Widget get _loading => Builder(builder: (context) {
+        return Center(
+          child: LoadingAnimationWidget.prograssiveDots(
+              color: context.color.onBackground, size: 50),
         );
       });
 
@@ -71,8 +69,19 @@ with ControllerProvider<SignInController> {
               height: 10,
             ),
             CustomTextField(
+              autofocus: true,
+              textInputAction: TextInputAction.next,
               controller: ctrl.emailController,
               keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              ctrl.emailValidation,
+              style: context.textTheme.labelSmall?.copyWith(
+                color: context.color.error,
+              ),
             ),
           ],
         );
@@ -95,7 +104,7 @@ with ControllerProvider<SignInController> {
             ),
             CustomTextField(
               controller: ctrl.passwordController,
-              obscureText: ctrl.shoudShowPassword,
+              obscureText: !ctrl.shoudShowPassword,
               maxLines: 1,
               suffixIcon: IconButton(
                 icon: Icon(
@@ -106,6 +115,15 @@ with ControllerProvider<SignInController> {
                 onPressed: ctrl.showOrHidePassword,
               ),
             ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              ctrl.passwordValidation,
+              style: context.textTheme.labelSmall?.copyWith(
+                color: context.color.error,
+              ),
+            ),
           ],
         );
       });
@@ -113,7 +131,9 @@ with ControllerProvider<SignInController> {
   Widget get _signButton => Observer(builder: (context) {
         final ctrl = controller(context);
         return SButton(
-          onPressed: () {},
+          onPressed: !ctrl.shoudShowLoginButton
+              ? null
+              : ctrl.signIn,
           child: Text(
             'Đăng nhập',
             style: context.textTheme.labelLarge?.copyWith(
@@ -128,7 +148,7 @@ with ControllerProvider<SignInController> {
         final ctrl = controller(context);
         return SButton(
           style: SButtonStyle.text,
-          onPressed: () {},
+          onPressed: ctrl.forgetPassword,
           child: Text(
             'Quên mật khẩu',
             style: context.textTheme.labelLarge?.copyWith(
