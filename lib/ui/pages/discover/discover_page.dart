@@ -5,6 +5,7 @@ import 'package:kt_course/common/extensions/context_extensions.dart';
 import 'package:kt_course/core/base/controller/controller_provider.dart';
 import 'package:kt_course/ui/pages/discover/controller/discover_controller.dart';
 import 'package:kt_course/ui/widgets/bouncing_tap_wrapper/bouncing_tap_wrapper.dart';
+import 'package:kt_course/ui/widgets/button/s_button.dart';
 import 'package:kt_course/ui/widgets/carousel_card/artist_card.dart';
 import 'package:kt_course/ui/widgets/carousel_card/music_small_card.dart';
 
@@ -24,7 +25,7 @@ class DiscoverPage extends StatelessWidget
             flexibleSpace: SafeArea(child: _topBar),
           ),
           SliverToBoxAdapter(
-            child: SizedBox(height: 1000),
+            child: SButton(child: Text('Palyer'), onPressed: () => nav.toMusicPlayer(),),
           )
         ]
       ),

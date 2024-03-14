@@ -8,13 +8,13 @@ import 'package:kt_course/core/di/Injector.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await injector.initialize();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    await JustAudioBackground.init(
+  await JustAudioBackground.init(
     androidNotificationChannelName: 'kt_app',
     androidNotificationOngoing: true,
     androidStopForegroundOnPause: true,
   );
+  await injector.initialize();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(
     EasyLocalization(
       supportedLocales: const [

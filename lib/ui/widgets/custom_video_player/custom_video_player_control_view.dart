@@ -60,7 +60,7 @@ class CustomVideoPlayerControl extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          '${_controller.currentSeek.toTime} / ${_controller.maxSeek.toTime}',
+                          '${_controller.currentSeek.toHms} / ${_controller.maxSeek.toHms}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white.withOpacity(0.7)),

@@ -2,7 +2,7 @@
 extension DurationExtensions on Duration {
 
   // Getter to format a Duration as a concise time string:
-  String get toTime {
+  String get toHms {
     // Split the duration string into hours, minutes, and seconds components:
     final timeParts = toString().split('.').first.split(':');
 
