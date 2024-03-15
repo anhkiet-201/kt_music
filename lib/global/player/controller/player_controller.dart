@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:just_audio/just_audio.dart';
+// ignore: depend_on_referenced_packages
 import 'package:audio_session/audio_session.dart' show AudioSession, AudioSessionConfiguration;
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:mobx/mobx.dart';
 import 'package:kt_course/core/base/controller/base_controller.dart';
 part 'player_controller.g.dart';
@@ -24,6 +24,14 @@ abstract class _PlayerControllerBase extends BaseController with Store {
 
   Stream<LoopMode> get loopMode => _player.loopModeStream;
 
+  Stream<bool> get shuffle => _player.shuffleModeEnabledStream;
+
+  List<AudioSource> get audioSources {
+    final data = _player.audioSource;
+    if(data == null) return [];
+    return (data as ConcatenatingAudioSource).children;
+  }
+
   @observable
   ProcessingState _playingState = ProcessingState.idle;
 
@@ -40,6 +48,8 @@ abstract class _PlayerControllerBase extends BaseController with Store {
     ProcessingState.completed => PlayState.finish,
   };
 
+  final sources = ConcatenatingAudioSource(children: []);
+
   _PlayerControllerBase() : _player = AudioPlayer() {
     _initialize();
   }
@@ -48,36 +58,7 @@ abstract class _PlayerControllerBase extends BaseController with Store {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.speech());
     _playerEventListen();
-    setSource(playlist: [
-      ClippingAudioSource(
-        child: AudioSource.uri(Uri.parse(
-            "https://firebasestorage.googleapis.com/v0/b/datn-578a6.appspot.com/o/demo%2Fdownload.mp3?alt=media&token=ca6925e7-50e2-40f8-b4ed-3326b077ae26")
-        ),
-        tag: MediaItem(
-          // Specify a unique ID for each media item:
-            id: '2',
-            // Metadata to display in the notification:
-            album: "Album name",
-            title: "Song name",
-            artUri: Uri.parse(
-                'https://www.forbes.com/advisor/wp-content/uploads/2023/09/how-much-does-a-cat-cost.jpeg-900x510.jpg')
-        ),
-      ),
-      ClippingAudioSource(
-        start: const Duration(seconds: 60),
-        end: const Duration(seconds: 90),
-        child: AudioSource.uri(Uri.parse(
-            "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3")),
-        tag: MediaItem(
-          // Specify a unique ID for each media item:
-            id: '1',
-            // Metadata to display in the notification:
-            album: "Album name",
-            title: "Song name",
-            artUri: Uri.parse(
-                'https://www.forbes.com/advisor/wp-content/uploads/2023/09/how-much-does-a-cat-cost.jpeg-900x510.jpg')),
-      ),
-    ]);
+    await _setSource();
   }
 
   @action
@@ -88,8 +69,24 @@ abstract class _PlayerControllerBase extends BaseController with Store {
     _player.playingStream.listen((event) => _playing = event);
   }
 
-  setSource({required List<AudioSource> playlist}) async {
-    await _player.setAudioSource(ConcatenatingAudioSource(children: playlist));
+  Future<void> _setSource() async {
+    await _player.setAudioSource(sources);
+  }
+
+  Future<void> addSource({bool clear = true, required List<AudioSource> source}) async {
+    if(clear) {
+      await _player.stop();
+      await sources.clear();
+    }
+    await sources.addAll(source);
+  }
+
+  void addMoreSource({required AudioSource source, int? index}) async {
+    if(index != null) {
+      await sources.insert(index, source);
+    } else {
+      await sources.add(source);
+    }
   }
 
   play() async {
@@ -102,6 +99,15 @@ abstract class _PlayerControllerBase extends BaseController with Store {
 
   seekTo({required Duration duration}) {
     _player.seek(duration);
+  }
+
+  playWithSource({required List<AudioSource> source}) async {
+    await addSource(source: source);
+    await play();
+  }
+
+  setShuffle(bool shuffle) {
+    _player.setShuffleModeEnabled(shuffle);
   }
 
   @override

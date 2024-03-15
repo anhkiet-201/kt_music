@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:kt_course/app/navigation/navigator_define.dart';
 import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/common/extensions/context_extensions.dart';
 import 'package:kt_course/core/base/controller/controller_provider.dart';
+import 'package:kt_course/global/player/player_controller_provider.dart';
 import 'package:kt_course/ui/pages/discover/controller/discover_controller.dart';
 import 'package:kt_course/ui/widgets/bouncing_tap_wrapper/bouncing_tap_wrapper.dart';
 import 'package:kt_course/ui/widgets/button/s_button.dart';
@@ -10,7 +13,7 @@ import 'package:kt_course/ui/widgets/carousel_card/artist_card.dart';
 import 'package:kt_course/ui/widgets/carousel_card/music_small_card.dart';
 
 class DiscoverPage extends StatelessWidget
-    with ControllerProvider<DiscoverController> {
+    with ControllerProvider<DiscoverController>, PlayerControllerProvider {
   const DiscoverPage({super.key});
 
   @override
@@ -25,7 +28,36 @@ class DiscoverPage extends StatelessWidget
             flexibleSpace: SafeArea(child: _topBar),
           ),
           SliverToBoxAdapter(
-            child: SButton(child: Text('Palyer'), onPressed: () => nav.toMusicPlayer(),),
+            child: SButton(child: Text('Palyer'), onPressed: () {
+              playerController.playWithSource(source: [
+                    ClippingAudioSource(
+                      child: AudioSource.uri(Uri.parse(
+                          "https://firebasestorage.googleapis.com/v0/b/datn-578a6.appspot.com/o/demo%2Fdownload.mp3?alt=media&token=ca6925e7-50e2-40f8-b4ed-3326b077ae26")),
+                      tag: MediaItem(
+                          // Specify a unique ID for each media item:
+                          id: '2',
+                          // Metadata to display in the notification:
+                          album: "Album name",
+                          title: "Song name",
+                          artUri: Uri.parse(
+                              'https://www.forbes.com/advisor/wp-content/uploads/2023/09/how-much-does-a-cat-cost.jpeg-900x510.jpg')),
+                    ),
+                    ClippingAudioSource(
+                      start: const Duration(seconds: 60),
+                      end: const Duration(seconds: 90),
+                      child: AudioSource.uri(Uri.parse(
+                          "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3")),
+                      tag: MediaItem(
+                          // Specify a unique ID for each media item:
+                          id: '1',
+                          // Metadata to display in the notification:
+                          album: "Album name",
+                          title: "Song name",
+                          artUri: Uri.parse(
+                              'https://www.forbes.com/advisor/wp-content/uploads/2023/09/how-much-does-a-cat-cost.jpeg-900x510.jpg')),
+                    ),
+                  ]);
+            },),
           )
         ]
       ),

@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/common/extensions/context_extensions.dart';
+import 'package:kt_course/common/extensions/hero_animation_extensions.dart';
 import 'package:kt_course/core/base/controller/controller_provider.dart';
 import 'package:kt_course/global/player/controller/player_controller.dart';
 import 'package:kt_course/ui/pages/music_player/controller/music_player_controller.dart';
@@ -61,7 +63,7 @@ class MusicPlayerPage extends StatelessWidget
                             child: Image.network(
                               'https://www.forbes.com/advisor/wp-content/uploads/2023/09/how-much-does-a-cat-cost.jpeg-900x510.jpg',
                               fit: BoxFit.cover,
-                            ),
+                            ).heroTag('avt'),
                           ),
                         ),
                       ),
@@ -96,12 +98,12 @@ class MusicPlayerPage extends StatelessWidget
                     'Song name',
                     style: context.textTheme.titleMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
+                  ).heroTag('title'),
                   Text(
                     'Artist',
                     style: context.textTheme.titleSmall?.copyWith(
                         color: context.color.onBackground.withOpacity(0.5)),
-                  )
+                  ).heroTag('artist')
                 ],
               ),
               Icon(
@@ -130,22 +132,37 @@ class MusicPlayerPage extends StatelessWidget
                           ctrl.playPosition?.inMilliseconds.toDouble() ?? 0.0;
                       final parsePosition =
                           position > duration ? duration : position;
-                      return Slider(
-                        value: parsePosition,
-                        onChangeStart: ctrl.onStartSeek,
-                        onChanged: ctrl.onSeeking,
-                        onChangeEnd: ctrl.onEndSeek,
-                        max: duration,
-                        inactiveColor: context.color.onPrimaryContainer,
+                      return Column(
+                        children: [
+                          Slider(
+                            value: parsePosition,
+                            onChangeStart: ctrl.onStartSeek,
+                            onChanged: ctrl.onSeeking,
+                            onChangeEnd: ctrl.onEndSeek,
+                            max: duration,
+                            inactiveColor: context.color.onPrimaryContainer,
+                          ),
+                        ],
                       );
                     });
                   }),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.shuffle_rounded,
-                    color: context.color.onPrimaryContainer,
+                  StreamBuilder<bool>(
+                    stream: ctrl.playerController.shuffle,
+                    builder: (context, snapshot) {
+                      final isShuffle = snapshot.data ?? false;
+                      return BouncingTapWaraper(
+                        child: GestureDetector(
+                          onTap: () => ctrl.playerController.setShuffle(!isShuffle),
+                          child: Icon(
+                            CupertinoIcons.shuffle,
+                            color: context.color.onPrimaryContainer.withOpacity(isShuffle ? 1.0 : 0.5),
+                          ),
+                        ),
+                      );
+                    }
                   ),
                   Expanded(
                     child: Row(
@@ -236,9 +253,9 @@ class MusicPlayerPage extends StatelessWidget
                     expand: false,
                     style: SButtonStyle.text,
                     child: Icon(
-                      Icons.favorite_outline_rounded,
+                      Icons.loop_rounded,
                       color: context.color.onPrimaryContainer,
-                      size: 25,
+
                     ),
                   ),
                 ],

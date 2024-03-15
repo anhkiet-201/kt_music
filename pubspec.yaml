@@ -83,6 +83,7 @@ dependencies:
   audio_service: ^0.18.12
   just_audio_background: ^0.0.1-beta.11
   app_links: ^3.5.1
+  text_scroll: ^0.2.0
 
 dev_dependencies:
   flutter_test:
