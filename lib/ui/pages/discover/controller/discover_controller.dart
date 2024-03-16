@@ -1,7 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:kt_course/common/extensions/context_extensions.dart';
 import 'package:mobx/mobx.dart';
 import 'package:kt_course/core/base/controller/base_controller.dart';
+import 'package:kt_course/core/navigation/navigator.dart' as nav;
+
 part 'discover_controller.g.dart';
 
 class DiscoverController = _DiscoverControllerBase with _$DiscoverController;
@@ -11,9 +16,12 @@ abstract class _DiscoverControllerBase extends BaseController with Store {
   @readonly
   TopbarOption _selectedOption = TopbarOption.all;
 
+  _DiscoverControllerBase() {
+  }
+
+
   @action
   void selectOption(TopbarOption option) {
-
   }
 
   @override

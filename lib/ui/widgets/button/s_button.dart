@@ -23,7 +23,8 @@ class SButton extends StatelessWidget {
         child: switch (style) {
           SButtonStyle.filled => _buildFilledStyle,
           SButtonStyle.outlined => _buildOutlinedStyle,
-          SButtonStyle.text => _buildTextStyle
+          SButtonStyle.text => _buildTextStyle,
+          SButtonStyle.wrapItem => _buildWrapItemStyle
         },
       ),
     );
@@ -43,10 +44,16 @@ class SButton extends StatelessWidget {
         onPressed: onPressed,
         child: child,
       );
+
+  Widget get _buildWrapItemStyle => GestureDetector(
+        onTap: onPressed,
+        child: child,
+      );
 }
 
 enum SButtonStyle {
   outlined,
   filled,
-  text;
+  text,
+  wrapItem;
 }
