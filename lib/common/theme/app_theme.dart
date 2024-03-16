@@ -46,6 +46,8 @@ class AppTheme {
         ColorScheme.fromSeed(
             brightness: Brightness.dark, 
             seedColor: const Color(0xff121212),
+            // background: Colors.black,
+
             primary: const Color(0xff1ED760));
     return _themeData(colorScheme, false);
   }

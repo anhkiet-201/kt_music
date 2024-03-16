@@ -1,32 +1,50 @@
+import 'package:kt_course/common/utils/scroll_physics/snap_scroll_physics.dart';
+import 'package:kt_course/core/navigation/navigator.dart' as navigator;
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kt_course/app/navigation/navigator_define.dart';
 import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/common/extensions/context_extensions.dart';
 import 'package:kt_course/core/base/controller/controller_provider.dart';
 import 'package:kt_course/ui/pages/discover/controller/discover_controller.dart';
 import 'package:kt_course/ui/widgets/bouncing_tap_wrapper/bouncing_tap_wrapper.dart';
-import 'package:kt_course/ui/widgets/carousel_card/artist_card.dart';
-import 'package:kt_course/ui/widgets/carousel_card/music_small_card.dart';
+import 'package:kt_course/ui/widgets/card/listened_recently.dart';
+import 'package:kt_course/ui/widgets/card/play_list_card.dart';
+import 'package:kt_course/ui/widgets/staggered_list/staggered_list.dart';
 
 class DiscoverPage extends StatelessWidget
     with ControllerProvider<DiscoverController> {
   const DiscoverPage({super.key});
 
+  static final maxPageHeight =
+      (navigator.Navigator.globalContext?.height ?? 100) * 0.8;
+  static final pageSnapPoint = maxPageHeight * 0.2;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        // padding: EdgeInsets.only(top: context.mediaQueryViewPadding.top),
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: context.mediaQueryViewPadding.top + 84,
-            flexibleSpace: SafeArea(child: _topBar),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(height: 1000),
-          )
-        ]
+      body: SafeArea(
+        child: Column(
+            // padding: EdgeInsets.only(top: context.mediaQueryViewPadding.top),
+            children: [
+              _topBar,
+              Expanded(
+                child: Observer(builder: (context) {
+                  final ctrl = controller(context);
+                  return SingleChildScrollView(
+                    // physics: ScrollSnappingPhysics(),
+                    child: Column(
+                      children: [
+                        _listenedRecentlyList,
+                        _recommendedSection(),
+                        _recommendedSection(),
+                        _recommendedSection(),
+                      ],
+                    ),
+                  );
+                }),
+              )
+            ]),
       ),
     );
   }
@@ -113,6 +131,80 @@ class DiscoverPage extends StatelessWidget
         );
       });
 
+  Widget get _listenedRecentlyList => Builder(builder: (context) {
+        final list = [
+          'SG - DJ Snake, Ozuna, Megan Thee Stallion, LISA of BLACKPINK',
+          'Love Letter ',
+          'Original Sin - Sofi Tukker, Felix Jaehn ',
+          'Peru - Fireboy DML',
+          'No Choice - Tame Impala',
+          'When you feel like this - Hermitude ft. The Jungle Giants',
+          'jealousy - FKA twigs ft. Rema',
+          'Sweetest Pie - Megan The Stallion, Dua Lipa',
+        ];
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: StaggeredList(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            length: list.length,
+            builder: (index) => ListenedRecentlyCard(title: list[index]),
+          ),
+        );
+      });
+
+  Widget _recommendedSection() {
+    return Builder(builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Tuyển tập hàng đầu của bạn',
+                style: context.textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (int i = 0; i < 10; i++)
+                    Padding(
+                      padding: EdgeInsets.only(right: i < 9 ? 8 : 0),
+                      child: PlayListCard(),
+                    )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget get _recommendedCard => Observer(builder: (context) {
+        return SizedBox(
+          height: DiscoverPage.maxPageHeight,
+          child: PageView(
+            children: [
+              for (int i = 0; i < 10; i++)
+                Container(
+                  color: Colors.primaries[i],
+                  alignment: Alignment.topCenter,
+                  child: const Text('da'),
+                )
+            ],
+          ),
+        );
+      });
+
   ///
 
   Widget get _horizontalList => Builder(builder: (context) {
@@ -125,32 +217,14 @@ class DiscoverPage extends StatelessWidget
                 padding: EdgeInsets.only(right: 20),
                 child: GestureDetector(
                   onTap: () => nav.toMusicPlayer(),
-                  child: MusicSmallCard(
-                    image:
-                        'https://www.awarenessdays.com/wp-content/uploads/2022/10/iStock-1319479588-1.jpg',
-                    title: 'Title',
-                    description:
-                        'Tận hưởng âm nhạc chất lượng cao 320kbps miễn phí với hàng triệu bài hát mới, playlist nhạc HOT, bảng xếp hạng',
+                  child: ListenedRecentlyCard(
+                    title: '',
                   ),
                 ),
               )
           ]),
         );
       });
-
-  Widget get _favoriteArtist => SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 20),
-        child: Row(
-          children: [
-            for (int i = 0; i < 10; i++)
-              const Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: ArtistCard(),
-              )
-          ],
-        ),
-      );
 
   Widget get _categories => Builder(builder: (context) {
         return SingleChildScrollView(
@@ -195,15 +269,5 @@ class DiscoverPage extends StatelessWidget
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
         );
-      });
-
-  Widget get _recommendedCard => Builder(builder: (context) {
-        return Container(
-            height: context.height -
-                (kBottomNavigationBarHeight +
-                    context.mediaQueryViewPadding.top +
-                    18),
-            width: context.width,
-            color: Colors.amber);
       });
 }
