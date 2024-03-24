@@ -9,21 +9,47 @@ part of 'auth_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AuthController on _AuthControllerBase, Store {
-  late final _$_isLoginedAtom =
-      Atom(name: '_AuthControllerBase._isLogined', context: context);
+  Computed<bool>? _$isLoginedComputed;
 
-  bool get isLogined {
-    _$_isLoginedAtom.reportRead();
-    return super._isLogined;
+  @override
+  bool get isLogined =>
+      (_$isLoginedComputed ??= Computed<bool>(() => super.isLogined,
+              name: '_AuthControllerBase.isLogined'))
+          .value;
+
+  late final _$_userAtom =
+      Atom(name: '_AuthControllerBase._user', context: context);
+
+  User? get user {
+    _$_userAtom.reportRead();
+    return super._user;
   }
 
   @override
-  bool get _isLogined => isLogined;
+  User? get _user => user;
 
   @override
-  set _isLogined(bool value) {
-    _$_isLoginedAtom.reportWrite(value, super._isLogined, () {
-      super._isLogined = value;
+  set _user(User? value) {
+    _$_userAtom.reportWrite(value, super._user, () {
+      super._user = value;
+    });
+  }
+
+  late final _$_isSyncingAtom =
+      Atom(name: '_AuthControllerBase._isSyncing', context: context);
+
+  bool get isSyncing {
+    _$_isSyncingAtom.reportRead();
+    return super._isSyncing;
+  }
+
+  @override
+  bool get _isSyncing => isSyncing;
+
+  @override
+  set _isSyncing(bool value) {
+    _$_isSyncingAtom.reportWrite(value, super._isSyncing, () {
+      super._isSyncing = value;
     });
   }
 
@@ -91,7 +117,7 @@ mixin _$AuthController on _AuthControllerBase, Store {
   @override
   String toString() {
     return '''
-
+isLogined: ${isLogined}
     ''';
   }
 }

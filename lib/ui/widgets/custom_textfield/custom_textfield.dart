@@ -17,7 +17,8 @@ class CustomTextField extends StatelessWidget {
       this.onChanged,
       this.autofocus = false,
       this.focusNode,
-      this.textInputAction});
+      this.textInputAction,
+      this.validator});
 
   final String? hintText;
   final int? maxLines;
@@ -32,6 +33,7 @@ class CustomTextField extends StatelessWidget {
   final bool autofocus;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
+  final String? Function(String? value)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class CustomTextField extends StatelessWidget {
           autofocus: autofocus,
           controller: controller,
           onChanged: onChanged,
+          validator: validator,
           textInputAction: textInputAction,
           maxLines: maxLines,
           cursorColor: context.color.onBackground,

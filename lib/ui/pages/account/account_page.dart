@@ -75,7 +75,11 @@ class AccountPage extends StatelessWidget
 
   AbstractSettingsSection get _optionsList => SettingsSectionCustom(
         tiles: [
-          SettingOptionsButton(title: 'settings', icon: const Icon(Icons.settings), onPress: nav.toSettings)
+          SettingOptionsButton(title: 'settings', icon: const Icon(Icons.settings), onPress: nav.toSettings),
+          SettingOptionsButton(
+              title: 'Artist',
+              icon: const Icon(Icons.settings),
+              onPress: nav.toArtistAccess),
         ],
       );
   

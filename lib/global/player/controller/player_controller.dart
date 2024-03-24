@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:kt_course/global/auth/auth_controller_provider.dart';
 import 'package:mobx/mobx.dart';
 import 'package:kt_course/core/base/controller/base_controller.dart';
 part 'player_controller.g.dart';
 
 class PlayerController = _PlayerControllerBase with _$PlayerController;
 
-abstract class _PlayerControllerBase extends BaseController with Store {
+abstract class _PlayerControllerBase extends BaseController with Store, AuthControllerProvider {
 
   final AudioPlayer _player;
 

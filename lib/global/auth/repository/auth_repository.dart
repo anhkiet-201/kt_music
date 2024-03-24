@@ -31,7 +31,7 @@ abstract interface class AuthRepository extends BaseRepository {
     required String email,
     required String password,
     required String name,
-    required String age,
+    required int age,
     required String gender
   });
 

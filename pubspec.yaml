@@ -84,6 +84,10 @@ dependencies:
   just_audio_background: ^0.0.1-beta.11
   app_links: ^3.5.1
   cached_network_image: ^3.3.1
+  file_picker: ^6.2.0
+  permission_handler: ^11.3.0
+  path: ^1.8.3
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:

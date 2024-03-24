@@ -20,8 +20,28 @@ abstract class _AuthControllerBase extends BaseController
         AuthRepositoryProvider,
         TabBarControllerProvider,
         LocalStorageProvider {
+  final StreamController<User?> onUserChange = StreamController.broadcast();
+
+  _AuthControllerBase() {
+    onUserChange.stream.listen((event) {
+      if (event != null) {
+        nav.toHome();
+        log.d('Login with: ${event.toJson()}');
+      } else {
+        nav.toOnBoading();
+        log.d('Not login!');
+      }
+    });
+  }
+
+  @computed
+  bool get isLogined => _user != null;
+
   @readonly
-  late bool _isLogined = authRepository.isLogined;
+  late User? _user = authRepository.user;
+
+  @readonly
+  bool _isSyncing = false;
 
   LoginMethodProvider? _loginMethodProvider;
   LoginMethodProvider? get loginMethod => _loginMethodProvider;
@@ -58,15 +78,10 @@ abstract class _AuthControllerBase extends BaseController
       }
       await authRepository.signIn(_loginMethodProvider!);
       log.d('Login successfull');
-      await syncUser();
     } catch (error) {
       log.e(error);
       nav.showSnackBar(error: error);
       _loginMethodProvider = null;
-    } finally {
-      if (authRepository.isLogined) {
-        nav.toHome();
-      }
     }
   }
 
@@ -82,25 +97,21 @@ abstract class _AuthControllerBase extends BaseController
           email: email,
           password: password,
           name: name,
-          age: age,
+          age: int.tryParse(age) ?? 0,
           gender: gender);
-      await syncUser();
     } catch (e) {
       log.e(e);
       nav.showSnackBar(error: e);
-    } finally {
-      if (authRepository.isLogined) {
-        nav.toHome();
-      }
     }
   }
 
-  User? get user => authRepository.user;
-
   @action
   Future<void> syncUser() async {
+    _isSyncing = true;
     await authRepository.sync();
-    _isLogined = authRepository.isLogined;
+    _user = authRepository.user;
+    _isSyncing = false;
+    onUserChange.sink.add(_user);
   }
 
   @action
@@ -108,9 +119,7 @@ abstract class _AuthControllerBase extends BaseController
     try {
       log.d('Start logout');
       await authRepository.signOut();
-      _isLogined = authRepository.isLogined;
       tabbarController.reset();
-      nav.toOnBoading();
     } catch (e) {
       log.e(e);
       nav.showSnackBar(error: e);
@@ -120,15 +129,15 @@ abstract class _AuthControllerBase extends BaseController
   Future<void> sendEmailReset({String? email}) async {
     try {
       log.d('Send email reset password');
-      await authRepository.resetPassword(email: email ?? user?.email ?? '');
+      await authRepository.resetPassword(email: email ?? _user?.email ?? '');
     } catch (e) {
       log.e(e);
       nav.showSnackBar(error: e);
-    } 
+    }
   }
 
   Future<String?> getEmailReset({String? code}) async {
-    if(code == null) return user?.email;
+    if (code == null) return _user?.email;
     try {
       return await authRepository.getEmailFromOobCode(code);
     } catch (e) {
@@ -138,19 +147,20 @@ abstract class _AuthControllerBase extends BaseController
     }
   }
 
-  Future<void> confirmNewPassword({
-    required String code,
-    required String newPassword
-  }) async {
+  Future<void> confirmNewPassword(
+      {required String code, required String newPassword}) async {
     try {
       log.d('Reset new password');
-      await authRepository.updatePassword(code: code, newPassword: newPassword,);
+      await authRepository.updatePassword(
+        code: code,
+        newPassword: newPassword,
+      );
     } catch (e) {
       log.e(e);
       nav.showSnackBar(error: e);
-    }  
+    }
   }
-  
+
   @override
   FutureOr onDispose() {}
 }
