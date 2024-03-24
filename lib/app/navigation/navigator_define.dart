@@ -1,8 +1,9 @@
 import 'package:kt_course/core/di/Injector.dart';
 import 'package:kt_course/core/navigation/navigator.dart';
 import 'package:kt_course/core/reactive/setting_value/controller/setting_value.dart';
-import 'package:kt_course/ui/pages/course_details/controller/course_details_controller.dart';
-import 'package:kt_course/ui/pages/course_details/course_details_page.dart';
+import 'package:kt_course/global/auth/auth_controller_provider.dart';
+import 'package:kt_course/ui/pages/artist_access/artist_access_page.dart';
+import 'package:kt_course/ui/pages/artist_access/controller/artist_access_controller.dart';
 import 'package:kt_course/ui/pages/home/controller/home_controller.dart';
 import 'package:kt_course/ui/pages/home/home_page.dart';
 import 'package:kt_course/ui/pages/music_player/controller/music_player_controller.dart';
@@ -10,6 +11,8 @@ import 'package:kt_course/ui/pages/music_player/music_player_page.dart';
 import 'package:kt_course/ui/pages/onboarding/controller/onboarding_controller.dart';
 import 'package:kt_course/ui/pages/onboarding/onboarding_page.dart';
 import 'package:kt_course/ui/pages/settings/settings_page.dart';
+import 'package:kt_course/ui/widgets/artist_privileges_intro/artist_privileges_intro.dart';
+import 'package:kt_course/ui/widgets/artist_register/controller/artist_register_controller.dart';
 import 'package:kt_course/ui/widgets/custom_video_player/controller/custom_video_player_controller.dart';
 import 'package:kt_course/ui/widgets/custom_video_player/custom_video_player_full_screen.dart';
 import 'package:kt_course/ui/widgets/input_email_reset/controller/input_email_reset_controller.dart';
@@ -29,7 +32,7 @@ import 'package:provider/provider.dart';
 final nav = NavigationDefine();
 
 // Defining the NavigationDefine class
-class NavigationDefine {
+class NavigationDefine with AuthControllerProvider {
   // Creating a final variable to hold the Navigator instance obtained from the dependency injector
   final _navigator = injector.get<Navigator>();
 
@@ -72,12 +75,11 @@ class NavigationDefine {
 
   toSignIn() {
     _navigator.showBottomSheet(
-      Provider(
-        create: (_) => SignInController(),
-        child: const SignIn(),
-      ),
-      title: 'Đăng nhập'
-    );
+        Provider(
+          create: (_) => SignInController(),
+          child: const SignIn(),
+        ),
+        title: 'Đăng nhập');
   }
 
   toResetPassword({
@@ -98,11 +100,29 @@ class NavigationDefine {
 
   toSendEmailReset() {
     _navigator.showBottomSheet(
+        Provider(
+          create: (_) => InputEmailResetController(),
+          child: const InputEmailReset(),
+        ),
+        title: 'Quên mật khẩu');
+  }
+
+  toArtistAccess() {
+    if (authController.user?.artistId == null) {
+      _navigator.showBottomSheet(
+        Provider(
+          create: (_) => ArtistRegisterController(),
+          child: const ArtistPrivilegesIntro(),
+        ),
+        title: 'Artist Register'
+      );
+      return;
+    }
+    _navigator.push(
       Provider(
-        create: (_) => InputEmailResetController(),
-        child: const InputEmailReset(),
+        create: (_) => ArtistAccessController(),
+        child: const ArtistAccessPage(),
       ),
-      title: 'Quên mật khẩu'
     );
   }
 
@@ -127,15 +147,6 @@ class NavigationDefine {
         title: title,
         initialChildSize: 0.5,
         maxChildSize: 0.5);
-  }
-
-  toCourseDetails() {
-    final controller = CourseDetailsController();
-    _navigator.push(Provider(
-      create: (_) => controller,
-      child: const CourseDetailsPage(),
-      dispose: (_, __) => controller.onDispose(),
-    ));
   }
 
   enterVideoPlayerFullScreenMode(CustomVideoPlayerController controller) {

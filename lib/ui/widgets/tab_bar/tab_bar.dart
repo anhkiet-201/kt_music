@@ -38,7 +38,7 @@ class TabBar extends StatelessWidget
                       iconSize: 24,
                       padding: padding,
                       icon: e.icon,
-                      leading: e == TabBarPredefine.account ? const Avatar(radius: 12) : null,
+                      leading: e == TabBarPredefine.account ? const Avatar(radius: 24) : null,
                       text: e.title,
                     );
                   })

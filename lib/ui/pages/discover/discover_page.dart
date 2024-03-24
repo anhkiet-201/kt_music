@@ -1,4 +1,3 @@
-import 'package:kt_course/common/utils/scroll_physics/snap_scroll_physics.dart';
 import 'package:kt_course/core/navigation/navigator.dart' as navigator;
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

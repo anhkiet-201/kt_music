@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
@@ -7,11 +6,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:kt_course/common/firebase_options.dart';
 import 'package:kt_course/core/data/local/hive_storage/local_storage.dart';
 import 'package:kt_course/core/data/local/impl/local_starage_impl.dart';
+import 'package:kt_course/core/firebase/fire_auth/fire_auth.dart';
+import 'package:kt_course/core/firebase/fire_storage/fire_storage_query.dart';
+import 'package:kt_course/core/firebase/fire_store/fire_store_query.dart';
 import 'package:kt_course/core/navigation/navigator.dart';
 import 'package:kt_course/app/navigation/navigator_impl.dart';
 import 'package:kt_course/core/reactive/setting_value/repository/setting_value_repository.dart';
 import 'package:kt_course/core/reactive/setting_value/repository/setting_value_repository_impl.dart';
-import 'package:kt_course/core/services/kt_music_services.dart';
 import 'package:kt_course/global/app/controller/app_controller.dart';
 import 'package:kt_course/global/app/repository/app_repository.dart';
 import 'package:kt_course/global/app/repository/app_repository_impl.dart';
@@ -24,7 +25,6 @@ import 'package:kt_course/global/settings/controller/settings_controller.dart';
 import 'package:kt_course/global/settings/repository/settings_repository.dart';
 import 'package:kt_course/global/settings/repository/settings_repository_impl.dart';
 import 'package:kt_course/global/tabbar/controller/tab_bar_controller.dart';
-import 'package:kt_course/impl/kt_music_services_impl.dart';
 
 final injector = Injector();
 
@@ -51,7 +51,11 @@ class Injector {
   }
 
   _injectServices() async {
-    _getIt.registerLazySingleton<KTMusicServices>(() => KTMusicServicesImpl());
+    _getIt.registerLazySingleton<FirebaseFireAuth>(() => FirebaseFireAuth());
+    _getIt.registerLazySingleton<FirebaseFireStoreQuery>(
+        () => FirebaseFireStoreQuery());
+    _getIt.registerLazySingleton<FirebaseFireStorageQuery>(
+        () => FirebaseFireStorageQuery());
   }
 
   _injectRepository() {
@@ -82,7 +86,7 @@ class Injector {
 
     // Register adapter
     // Hive.registerAdapter(UserAdapter());
-    
+
     // Open boxes
     await Hive.openBox(LocalStorage.defaultBox);
     await Hive.openBox(LocalStorage.settingsBox);

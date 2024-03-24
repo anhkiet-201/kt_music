@@ -9,15 +9,22 @@ part 'user.g.dart';
 
 @freezed
 class User with _$User {
+
+  // ignore: invalid_annotation_target
+  @JsonSerializable(explicitToJson: true)
   const factory User({
       required String email,
       required String name,
       required String uuid,
       String? avatar,
       String? phone,
-      int? age
+      int? age,
+      String? artistId,
+      bool? ff
   }) = _User;
 
-  factory User.fromJson(Map<String, Object?> json)
+  // bool get isArtist => artist != null;
+
+  factory User.fromJson(Map<String, dynamic> json)
       => _$UserFromJson(json);
 }

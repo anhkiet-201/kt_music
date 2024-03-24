@@ -33,7 +33,7 @@ class SPlaceholder extends StatelessWidget {
         )
         .shimmer(
           duration: 2000.ms,
-          color: context.color.onBackground,
+          color: context.color.onBackground.withOpacity(0.1),
         );
   }
 }

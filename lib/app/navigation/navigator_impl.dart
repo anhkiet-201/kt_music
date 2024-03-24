@@ -130,7 +130,7 @@ class NavigatorImpl implements nav.Navigator {
                   title: Builder(builder: (titleContext) {
                     return Text(
                       title?.tr(context: titleContext) ?? '',
-                      style: context.textTheme.titleLarge
+                      style: context.textTheme.titleMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
                     );
                   }),
