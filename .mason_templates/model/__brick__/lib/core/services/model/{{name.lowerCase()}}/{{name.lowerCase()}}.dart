@@ -9,10 +9,13 @@ part '{{name.lowerCase()}}.g.dart';
 
 @freezed
 class {{name.pascalCase()}} with _${{name.pascalCase()}} {
+
+  // ignore: invalid_annotation_target
+  @JsonSerializable(explicitToJson: true)
   const factory {{name.pascalCase()}}({
 
   }) = _{{name.pascalCase()}};
 
-  factory {{name.pascalCase()}}.fromJson(Map<String, Object?> json)
+  factory {{name.pascalCase()}}.fromJson(Map<String, dynamic> json)
       => _${{name.pascalCase()}}FromJson(json);
 }

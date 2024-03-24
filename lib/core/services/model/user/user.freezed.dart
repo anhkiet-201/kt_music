@@ -26,6 +26,8 @@ mixin _$User {
   String? get avatar => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   int? get age => throw _privateConstructorUsedError;
+  String? get artistId => throw _privateConstructorUsedError;
+  bool? get ff => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +45,9 @@ abstract class $UserCopyWith<$Res> {
       String uuid,
       String? avatar,
       String? phone,
-      int? age});
+      int? age,
+      String? artistId,
+      bool? ff});
 }
 
 /// @nodoc
@@ -65,6 +69,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? avatar = freezed,
     Object? phone = freezed,
     Object? age = freezed,
+    Object? artistId = freezed,
+    Object? ff = freezed,
   }) {
     return _then(_value.copyWith(
       email: null == email
@@ -91,6 +97,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.age
           : age // ignore: cast_nullable_to_non_nullable
               as int?,
+      artistId: freezed == artistId
+          ? _value.artistId
+          : artistId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ff: freezed == ff
+          ? _value.ff
+          : ff // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -108,7 +122,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String uuid,
       String? avatar,
       String? phone,
-      int? age});
+      int? age,
+      String? artistId,
+      bool? ff});
 }
 
 /// @nodoc
@@ -127,6 +143,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? avatar = freezed,
     Object? phone = freezed,
     Object? age = freezed,
+    Object? artistId = freezed,
+    Object? ff = freezed,
   }) {
     return _then(_$UserImpl(
       email: null == email
@@ -153,12 +171,21 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.age
           : age // ignore: cast_nullable_to_non_nullable
               as int?,
+      artistId: freezed == artistId
+          ? _value.artistId
+          : artistId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ff: freezed == ff
+          ? _value.ff
+          : ff // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$UserImpl with DiagnosticableTreeMixin implements _User {
   const _$UserImpl(
       {required this.email,
@@ -166,7 +193,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       required this.uuid,
       this.avatar,
       this.phone,
-      this.age});
+      this.age,
+      this.artistId,
+      this.ff});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -183,10 +212,14 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
   final String? phone;
   @override
   final int? age;
+  @override
+  final String? artistId;
+  @override
+  final bool? ff;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'User(email: $email, name: $name, uuid: $uuid, avatar: $avatar, phone: $phone, age: $age)';
+    return 'User(email: $email, name: $name, uuid: $uuid, avatar: $avatar, phone: $phone, age: $age, artistId: $artistId, ff: $ff)';
   }
 
   @override
@@ -199,7 +232,9 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
       ..add(DiagnosticsProperty('uuid', uuid))
       ..add(DiagnosticsProperty('avatar', avatar))
       ..add(DiagnosticsProperty('phone', phone))
-      ..add(DiagnosticsProperty('age', age));
+      ..add(DiagnosticsProperty('age', age))
+      ..add(DiagnosticsProperty('artistId', artistId))
+      ..add(DiagnosticsProperty('ff', ff));
   }
 
   @override
@@ -212,13 +247,16 @@ class _$UserImpl with DiagnosticableTreeMixin implements _User {
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.age, age) || other.age == age));
+            (identical(other.age, age) || other.age == age) &&
+            (identical(other.artistId, artistId) ||
+                other.artistId == artistId) &&
+            (identical(other.ff, ff) || other.ff == ff));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, email, name, uuid, avatar, phone, age);
+  int get hashCode => Object.hash(
+      runtimeType, email, name, uuid, avatar, phone, age, artistId, ff);
 
   @JsonKey(ignore: true)
   @override
@@ -241,7 +279,9 @@ abstract class _User implements User {
       required final String uuid,
       final String? avatar,
       final String? phone,
-      final int? age}) = _$UserImpl;
+      final int? age,
+      final String? artistId,
+      final bool? ff}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -257,6 +297,10 @@ abstract class _User implements User {
   String? get phone;
   @override
   int? get age;
+  @override
+  String? get artistId;
+  @override
+  bool? get ff;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

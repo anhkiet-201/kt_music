@@ -1,20 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:kt_course/core/di/Injector.dart';
+import 'package:kt_course/core/firebase/fire_auth/fire_auth.dart';
+import 'package:kt_course/core/firebase/fire_storage/fire_storage_query.dart';
+import 'package:kt_course/core/firebase/fire_store/fire_store_query.dart';
 
 mixin FirebaseAuthProvider {
-  FirebaseAuth get auth => FirebaseAuth.instance;
+  FirebaseFireAuth get auth => injector.get();
 }
 
 mixin FirebaseFireStoreProvider {
-  FirebaseFirestore get fireStore => FirebaseFirestore.instance;
+  FirebaseFireStoreQuery get fireStore => injector.get();
 }
 
 mixin FirebaseDatabaseProvider {
   FirebaseDatabase get database => FirebaseDatabase.instance;
 }
 
-mixin FirebaseStorageProvider {
-  FirebaseStorage get storage => FirebaseStorage.instanceFor(bucket: '');
+mixin FirebaseFireStorageProvider {
+  FirebaseFireStorageQuery get storage => injector.get();
 }

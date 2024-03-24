@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kt_course/common/color/color.dart';
 import 'package:kt_course/core/base/controller/controller_provider.dart';
 import 'package:kt_course/ui/pages/search/controller/search_controller.dart' as s;
-import 'package:kt_course/ui/widgets/course/course_list_item.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SearchPage extends StatelessWidget
@@ -55,7 +54,7 @@ class SearchPage extends StatelessWidget
 
   Widget get _searchResult => Observer(builder: (context) {
         return Column(
-          children: [for (int i = 0; i < 10; i++) const CourseListItem()],
+          children: [for (int i = 0; i < 10; i++) const SizedBox()],
         );
       });
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:kt_course/app/navigation/navigator_define.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kt_course/global/app_links/app_links_controller_provider.dart';
 import 'package:kt_course/global/auth/auth_controller_provider.dart';
 import 'package:mobx/mobx.dart';
@@ -16,12 +16,9 @@ abstract class _SplashControllerBase extends BaseController
 
   @action
   initialize() async {
-    if (authController.isLogined) {
-      await authController.syncUser();
-      nav.toHome();
-    } else {
-      nav.toOnBoading();
-    }
+    FirebaseAuth.instance.userChanges().listen((event) {
+      authController.syncUser();
+    });
     appLinksController.execute();
   }
 

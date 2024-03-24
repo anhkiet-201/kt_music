@@ -50,13 +50,13 @@ class _BouncingTapWaraperState extends State<BouncingTapWaraper> with SingleTick
         return Transform.scale(
           scale: _scaleAnimation.value,
           child: GestureDetector(
-            onLongPressDown: (details) {
+            onPanDown: (details) {
               _animationController.forward();
             },
-            onLongPressCancel: () {
+            onPanCancel: () {
               _animationController.reverse();
             },
-            onLongPressUp: () {
+            onPanUpdate: (_) {
               _animationController.reverse();
             },
             child: widget.child,
