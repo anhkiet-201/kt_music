@@ -49,4 +49,6 @@ abstract interface class AuthRepository extends BaseRepository {
   });
 
   User? get user;
+
+  Stream<User?> get onUserDataChange;
 }

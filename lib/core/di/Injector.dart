@@ -13,6 +13,8 @@ import 'package:kt_course/core/navigation/navigator.dart';
 import 'package:kt_course/app/navigation/navigator_impl.dart';
 import 'package:kt_course/core/reactive/setting_value/repository/setting_value_repository.dart';
 import 'package:kt_course/core/reactive/setting_value/repository/setting_value_repository_impl.dart';
+import 'package:kt_course/global/api/repository/api_repository.dart';
+import 'package:kt_course/global/api/repository/api_repository_impl.dart';
 import 'package:kt_course/global/app/controller/app_controller.dart';
 import 'package:kt_course/global/app/repository/app_repository.dart';
 import 'package:kt_course/global/app/repository/app_repository_impl.dart';
@@ -65,8 +67,9 @@ class Injector {
         SettingValueRepositoryImpl.new);
     _getIt
         .registerLazySingleton<SettingsRepository>(SettingsRepositoryImpl.new);
+        _getIt
+        .registerLazySingleton<ApiRepository>(ApiRepositoryImpl.new);
   }
-
   _injectNavigator() {
     _getIt.registerLazySingleton<Navigator>(NavigatorImpl.new);
   }

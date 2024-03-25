@@ -13,7 +13,9 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       avatar: json['avatar'] as String?,
       phone: json['phone'] as String?,
       age: json['age'] as int?,
-      artistId: json['artistId'] as String?,
+      artist: json['artist'] == null
+          ? null
+          : Artist.fromJson(json['artist'] as Map<String, dynamic>),
       ff: json['ff'] as bool?,
     );
 
@@ -25,6 +27,6 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'avatar': instance.avatar,
       'phone': instance.phone,
       'age': instance.age,
-      'artistId': instance.artistId,
+      'artist': instance.artist?.toJson(),
       'ff': instance.ff,
     };

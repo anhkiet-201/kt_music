@@ -8,7 +8,6 @@ import 'package:kt_course/global/auth/repository/auth_repository.dart';
 class AuthRepositoryImpl
     with FirebaseAuthProvider, FirebaseFireStoreProvider
     implements AuthRepository {
-
   @override
   Future<bool> signIn(LoginMethodProvider loginMethodProvider) async {
     try {
@@ -95,4 +94,14 @@ class AuthRepositoryImpl
   User? _user;
   @override
   User? get user => _user;
+
+  @override
+  Stream<User?> get onUserDataChange =>
+      fireStore.onUserChange(user?.uuid ?? '').map((event) {
+        final data = event.data();
+        if (data == null) {
+          return null;
+        }
+        return User.fromJson(data);
+      }).asBroadcastStream();
 }

@@ -23,15 +23,24 @@ abstract class _AuthControllerBase extends BaseController
   final StreamController<User?> onUserChange = StreamController.broadcast();
 
   _AuthControllerBase() {
+    /// Navigate the screen based on authentication status
     onUserChange.stream.listen((event) {
       if (event != null) {
         nav.toHome();
+        /// Re-sync user data if it has change on Firestore
+        authRepository.onUserDataChange.listen((user) {
+          if (user != null && user != _user) {
+            log.i('User data has change!');
+            syncUser(syncWithUpdateState: false);
+          }
+        });
         log.d('Login with: ${event.toJson()}');
       } else {
         nav.toOnBoading();
         log.d('Not login!');
       }
     });
+
   }
 
   @computed
@@ -45,6 +54,11 @@ abstract class _AuthControllerBase extends BaseController
 
   LoginMethodProvider? _loginMethodProvider;
   LoginMethodProvider? get loginMethod => _loginMethodProvider;
+
+  @action
+  void _listenUserChange() {
+    
+  }
 
   @action
   Future<void> signInWithGoogle() async {
@@ -106,12 +120,14 @@ abstract class _AuthControllerBase extends BaseController
   }
 
   @action
-  Future<void> syncUser() async {
+  Future<void> syncUser({bool syncWithUpdateState = true}) async {
     _isSyncing = true;
     await authRepository.sync();
     _user = authRepository.user;
     _isSyncing = false;
-    onUserChange.sink.add(_user);
+    if(syncWithUpdateState) {
+      onUserChange.sink.add(_user);
+    }
   }
 
   @action

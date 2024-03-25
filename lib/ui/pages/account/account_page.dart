@@ -20,11 +20,7 @@ class AccountPage extends StatelessWidget
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomSettingList(
-        sections: [
-          _info,
-          _optionsList,
-          _logoutButton
-        ],
+        sections: [_info, _optionsList, _logoutButton],
       ),
     );
   }
@@ -73,43 +69,47 @@ class AccountPage extends StatelessWidget
         ],
       );
 
-  AbstractSettingsSection get _optionsList => SettingsSectionCustom(
-        tiles: [
-          SettingOptionsButton(title: 'settings', icon: const Icon(Icons.settings), onPress: nav.toSettings),
-          SettingOptionsButton(
-              title: 'Artist',
-              icon: const Icon(Icons.settings),
-              onPress: nav.toArtistAccess),
-        ],
+  AbstractSettingsSection get _optionsList => CustomSettingsSection(
+        child: Builder(builder: (context) {
+          return SettingsSectionCustom(
+            tiles: [
+              SettingOptionsButton(
+                  title: 'settings',
+                  icon: const Icon(Icons.settings),
+                  onPress: nav.toSettings),
+              SettingOptionsButton(
+                title: 'Artist',
+                icon: const Icon(Icons.settings),
+                onPress: controller(context).openArtistManager,
+              ),
+            ],
+          );
+        }),
       );
-  
+
   AbstractSettingsSection get _logoutButton => SettingsSectionCustom(
         tiles: [
           CustomSettingsTile(
-            child: TextButton(
-              onPressed: () => authController.logout(),
-              style: TextButton.styleFrom(
-                  shape:
-                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                child: Center(
-                  child: Builder(
-                    builder: (context) {
-                      return Text(
-                        'logout'.tr(context: context),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.redAccent
-                        ),
-                      );
-                    }
-                  ),
-                ),
+              child: TextButton(
+            onPressed: () => authController.logout(),
+            style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10))),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Center(
+                child: Builder(builder: (context) {
+                  return Text(
+                    'logout'.tr(context: context),
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.redAccent),
+                  );
+                }),
               ),
-            )
-          )
+            ),
+          ))
         ],
       );
 }
