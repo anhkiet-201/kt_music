@@ -102,8 +102,9 @@ mixin _$AuthController on _AuthControllerBase, Store {
       AsyncAction('_AuthControllerBase.syncUser', context: context);
 
   @override
-  Future<void> syncUser() {
-    return _$syncUserAsyncAction.run(() => super.syncUser());
+  Future<void> syncUser({bool syncWithUpdateState = true}) {
+    return _$syncUserAsyncAction
+        .run(() => super.syncUser(syncWithUpdateState: syncWithUpdateState));
   }
 
   late final _$logoutAsyncAction =
