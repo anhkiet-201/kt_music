@@ -1,10 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:kt_course/core/firebase/fire_storage/upload_item.dart';
-import 'package:kt_course/global/auth/auth_controller_provider.dart';
+import 'package:kt_course/core/firebase/firebase_provider.dart';
 
 part 'fire_storage_path.dart';
 
-class FirebaseFireStorageQuery with AuthControllerProvider {
+class FirebaseFireStorageQuery with FirebaseAuthProvider {
   final _storage = FirebaseStorage.instance;
 
   // UploadTask updateAvatarByUID({

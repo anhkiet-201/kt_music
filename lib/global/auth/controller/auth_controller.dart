@@ -32,6 +32,9 @@ abstract class _AuthControllerBase extends BaseController
         log.d('Not login!');
       }
     });
+    // authRepository.onUserDataChange.listen((event) {
+    //   print('Debug 112 data change ${event?.toJson()}');
+    // });
   }
 
   @computed

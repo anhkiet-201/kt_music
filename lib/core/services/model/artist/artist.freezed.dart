@@ -20,11 +20,9 @@ Artist _$ArtistFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Artist {
-  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get thumbnail => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  List<ArtistMember> get member => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,12 +34,7 @@ abstract class $ArtistCopyWith<$Res> {
   factory $ArtistCopyWith(Artist value, $Res Function(Artist) then) =
       _$ArtistCopyWithImpl<$Res, Artist>;
   @useResult
-  $Res call(
-      {String id,
-      String name,
-      String thumbnail,
-      String? description,
-      List<ArtistMember> member});
+  $Res call({String name, String thumbnail, String? description});
 }
 
 /// @nodoc
@@ -57,17 +50,11 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? name = null,
     Object? thumbnail = null,
     Object? description = freezed,
-    Object? member = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -80,10 +67,6 @@ class _$ArtistCopyWithImpl<$Res, $Val extends Artist>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      member: null == member
-          ? _value.member
-          : member // ignore: cast_nullable_to_non_nullable
-              as List<ArtistMember>,
     ) as $Val);
   }
 }
@@ -95,12 +78,7 @@ abstract class _$$ArtistImplCopyWith<$Res> implements $ArtistCopyWith<$Res> {
       __$$ArtistImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String name,
-      String thumbnail,
-      String? description,
-      List<ArtistMember> member});
+  $Res call({String name, String thumbnail, String? description});
 }
 
 /// @nodoc
@@ -114,17 +92,11 @@ class __$$ArtistImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? name = null,
     Object? thumbnail = null,
     Object? description = freezed,
-    Object? member = null,
   }) {
     return _then(_$ArtistImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -137,10 +109,6 @@ class __$$ArtistImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      member: null == member
-          ? _value._member
-          : member // ignore: cast_nullable_to_non_nullable
-              as List<ArtistMember>,
     ));
   }
 }
@@ -150,35 +118,21 @@ class __$$ArtistImplCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true)
 class _$ArtistImpl with DiagnosticableTreeMixin implements _Artist {
   const _$ArtistImpl(
-      {required this.id,
-      required this.name,
-      required this.thumbnail,
-      this.description,
-      required final List<ArtistMember> member})
-      : _member = member;
+      {required this.name, required this.thumbnail, this.description});
 
   factory _$ArtistImpl.fromJson(Map<String, dynamic> json) =>
       _$$ArtistImplFromJson(json);
 
-  @override
-  final String id;
   @override
   final String name;
   @override
   final String thumbnail;
   @override
   final String? description;
-  final List<ArtistMember> _member;
-  @override
-  List<ArtistMember> get member {
-    if (_member is EqualUnmodifiableListView) return _member;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_member);
-  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Artist(id: $id, name: $name, thumbnail: $thumbnail, description: $description, member: $member)';
+    return 'Artist(name: $name, thumbnail: $thumbnail, description: $description)';
   }
 
   @override
@@ -186,11 +140,9 @@ class _$ArtistImpl with DiagnosticableTreeMixin implements _Artist {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Artist'))
-      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('thumbnail', thumbnail))
-      ..add(DiagnosticsProperty('description', description))
-      ..add(DiagnosticsProperty('member', member));
+      ..add(DiagnosticsProperty('description', description));
   }
 
   @override
@@ -198,19 +150,16 @@ class _$ArtistImpl with DiagnosticableTreeMixin implements _Artist {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ArtistImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.thumbnail, thumbnail) ||
                 other.thumbnail == thumbnail) &&
             (identical(other.description, description) ||
-                other.description == description) &&
-            const DeepCollectionEquality().equals(other._member, _member));
+                other.description == description));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, thumbnail, description,
-      const DeepCollectionEquality().hash(_member));
+  int get hashCode => Object.hash(runtimeType, name, thumbnail, description);
 
   @JsonKey(ignore: true)
   @override
@@ -228,24 +177,18 @@ class _$ArtistImpl with DiagnosticableTreeMixin implements _Artist {
 
 abstract class _Artist implements Artist {
   const factory _Artist(
-      {required final String id,
-      required final String name,
+      {required final String name,
       required final String thumbnail,
-      final String? description,
-      required final List<ArtistMember> member}) = _$ArtistImpl;
+      final String? description}) = _$ArtistImpl;
 
   factory _Artist.fromJson(Map<String, dynamic> json) = _$ArtistImpl.fromJson;
 
-  @override
-  String get id;
   @override
   String get name;
   @override
   String get thumbnail;
   @override
   String? get description;
-  @override
-  List<ArtistMember> get member;
   @override
   @JsonKey(ignore: true)
   _$$ArtistImplCopyWith<_$ArtistImpl> get copyWith =>

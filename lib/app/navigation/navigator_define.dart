@@ -11,7 +11,7 @@ import 'package:kt_course/ui/pages/music_player/music_player_page.dart';
 import 'package:kt_course/ui/pages/onboarding/controller/onboarding_controller.dart';
 import 'package:kt_course/ui/pages/onboarding/onboarding_page.dart';
 import 'package:kt_course/ui/pages/settings/settings_page.dart';
-import 'package:kt_course/ui/widgets/artist_privileges_intro/artist_privileges_intro.dart';
+import 'package:kt_course/ui/widgets/artist_register/artist_register.dart';
 import 'package:kt_course/ui/widgets/artist_register/controller/artist_register_controller.dart';
 import 'package:kt_course/ui/widgets/custom_video_player/controller/custom_video_player_controller.dart';
 import 'package:kt_course/ui/widgets/custom_video_player/custom_video_player_full_screen.dart';
@@ -107,17 +107,17 @@ class NavigationDefine with AuthControllerProvider {
         title: 'Quên mật khẩu');
   }
 
+  toArtistRegister() {
+    _navigator.showBottomSheet(
+      Provider(
+        create: (_) => ArtistRegisterController(),
+        child: ArtistRegister(),
+      ),
+      title: 'Artist Register',
+    );
+  }
+
   toArtistAccess() {
-    if (authController.user?.artistId == null) {
-      _navigator.showBottomSheet(
-        Provider(
-          create: (_) => ArtistRegisterController(),
-          child: const ArtistPrivilegesIntro(),
-        ),
-        title: 'Artist Register'
-      );
-      return;
-    }
     _navigator.push(
       Provider(
         create: (_) => ArtistAccessController(),

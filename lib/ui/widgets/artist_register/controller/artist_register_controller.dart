@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart' hide FileType;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kt_course/app/navigation/navigator_define.dart';
 import 'package:kt_course/core/firebase/fire_storage/fire_storage_query.dart';
 import 'package:kt_course/core/firebase/fire_storage/upload_item.dart';
 import 'package:kt_course/core/firebase/firebase_provider.dart';
 import 'package:kt_course/core/services/model/artist/artist.dart';
+import 'package:kt_course/global/api/api_repository_provider.dart';
+import 'package:kt_course/global/auth/auth_controller_provider.dart';
 import 'package:kt_course/ui/widgets/upload/controller/upload_controller.dart';
 import 'package:mobx/mobx.dart';
 import 'package:kt_course/core/base/controller/base_controller.dart';
@@ -18,7 +20,11 @@ class ArtistRegisterController = _ArtistRegisterControllerBase
     with _$ArtistRegisterController;
 
 abstract class _ArtistRegisterControllerBase extends BaseController
-    with Store, FirebaseFireStorageProvider, FirebaseFireStoreProvider {
+    with
+        Store,
+        ApiRepositoryProvider,
+        FirebaseFireStorageProvider,
+        AuthControllerProvider {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final UploadController uploadController = UploadController();
@@ -62,7 +68,8 @@ abstract class _ArtistRegisterControllerBase extends BaseController
       nav.showSnackBar(message: 'Need permision to access photos');
       return;
     }
-    final filePickerResult = await FilePicker.platform.pickFiles();
+    final filePickerResult =
+        await FilePicker.platform.pickFiles(type: FileType.image);
     if (filePickerResult == null) {
       _isPickedFile = false;
       return;
@@ -71,7 +78,7 @@ abstract class _ArtistRegisterControllerBase extends BaseController
       uploadItem: UploadItem(
         reference: storage.userAvatarPath,
         file: File(filePickerResult.files.single.path!),
-        fileType: FileType.image,
+        fileType: UploadFileType.image,
       ),
     );
     _isPickedFile = true;
@@ -97,13 +104,13 @@ abstract class _ArtistRegisterControllerBase extends BaseController
   Future<void> submit() async {
     _isLoading = true;
     try {
-      // await fireStore.registerAsArtist(
-      //   artist: Artist(
-      //     name: nameController.text.trim(),
-      //     description: descriptionController.text.trim(),
-      //     thumbnail: _url,
-      //   ),
-      // );
+      await apiRepository.registerAsArtist(
+        artist: Artist(
+          name: nameController.text.trim(),
+          description: descriptionController.text.trim(),
+          thumbnail: _url,
+        ),
+      );
     } catch (error) {
       nav.showSnackBar(error: error);
     }

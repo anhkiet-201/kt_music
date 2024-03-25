@@ -14,25 +14,10 @@ class Artist with _$Artist {
   // ignore: invalid_annotation_target
   @JsonSerializable(explicitToJson: true)
   const factory Artist({
-    required String id,
     required String name,
     required String thumbnail,
     String? description,
-    required List<ArtistMember> member,
   }) = _Artist;
-
-  static create({
-    required String name,
-    required String thumbnail,
-    String? description,
-    List<ArtistMember> member = const [],
-  }) =>
-      Artist(
-        id: const UuidV8().generate(),
-        name: name,
-        thumbnail: thumbnail,
-        member: member,
-      );
 
   factory Artist.fromJson(Map<String, dynamic> json) => _$ArtistFromJson(json);
 }

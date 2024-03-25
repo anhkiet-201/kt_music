@@ -8,7 +8,7 @@ class UploadItem {
   final String _fileName;
   final File file;
   final String fileExtension;
-  final FileType fileType;
+  final UploadFileType fileType;
 
   UploadItem({
     required this.reference,
@@ -21,7 +21,7 @@ class UploadItem {
   String get fileName => _fileName;
 }
 
-enum FileType {
+enum UploadFileType {
   video,
   image,
   audio;
