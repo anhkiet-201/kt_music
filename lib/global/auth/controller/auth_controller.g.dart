@@ -115,6 +115,20 @@ mixin _$AuthController on _AuthControllerBase, Store {
     return _$logoutAsyncAction.run(() => super.logout(allDevices: allDevices));
   }
 
+  late final _$_AuthControllerBaseActionController =
+      ActionController(name: '_AuthControllerBase', context: context);
+
+  @override
+  void _listenUserChange() {
+    final _$actionInfo = _$_AuthControllerBaseActionController.startAction(
+        name: '_AuthControllerBase._listenUserChange');
+    try {
+      return super._listenUserChange();
+    } finally {
+      _$_AuthControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

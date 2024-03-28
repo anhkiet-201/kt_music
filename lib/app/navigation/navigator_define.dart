@@ -10,6 +10,8 @@ import 'package:kt_course/ui/pages/music_player/controller/music_player_controll
 import 'package:kt_course/ui/pages/music_player/music_player_page.dart';
 import 'package:kt_course/ui/pages/onboarding/controller/onboarding_controller.dart';
 import 'package:kt_course/ui/pages/onboarding/onboarding_page.dart';
+import 'package:kt_course/ui/pages/profile/controller/profile_controller.dart';
+import 'package:kt_course/ui/pages/profile/profile_page.dart';
 import 'package:kt_course/ui/pages/settings/settings_page.dart';
 import 'package:kt_course/ui/widgets/artist_register/artist_register.dart';
 import 'package:kt_course/ui/widgets/artist_register/controller/artist_register_controller.dart';
@@ -158,5 +160,14 @@ class NavigationDefine with AuthControllerProvider {
       create: (_) => MusicPlayerController(),
       child: const MusicPlayerPage(),
     ));
+  }
+
+  toProfile() {
+    _navigator.push(
+      Provider(
+        create: (_) => ProfileController(),
+        child: const ProfilePage(),
+      )
+    );
   }
 }

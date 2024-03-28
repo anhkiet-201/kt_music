@@ -18,6 +18,8 @@ abstract class _AccountControllerBase extends BaseController with Store, AuthCon
     nav.toArtistAccess();
   }
 
+  void openProfile() => nav.toProfile();
+
   @override
   FutureOr onDispose() {
 

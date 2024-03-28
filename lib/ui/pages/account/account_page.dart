@@ -82,6 +82,11 @@ class AccountPage extends StatelessWidget
                 icon: const Icon(Icons.settings),
                 onPress: controller(context).openArtistManager,
               ),
+              SettingOptionsButton(
+                title: 'Profile',
+                icon: const Icon(Icons.settings),
+                onPress: controller(context).openProfile,
+              ),
             ],
           );
         }),
